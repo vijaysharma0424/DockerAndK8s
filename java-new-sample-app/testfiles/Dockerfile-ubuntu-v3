@@ -1,0 +1,30 @@
+# Single-stage Dockerfile with Ubuntu
+FROM ubuntu:latest
+
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk maven
+
+# Set working directory
+WORKDIR /app
+
+# Copy project files
+COPY pom.xml ./
+RUN mvn dependency:go-offline
+
+COPY src ./src
+
+# Build the application
+RUN mvn clean package
+
+# List the contents of the /app directory to verify the build
+RUN ls -l /app
+
+# Copy the built JAR
+COPY target/*.jar /app/app.jar
+
+# Expose port
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

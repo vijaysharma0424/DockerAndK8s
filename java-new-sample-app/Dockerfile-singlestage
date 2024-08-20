@@ -1,0 +1,27 @@
+FROM ubuntu:latest
+
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk maven
+RUN useradd -m appuser
+# Set working directory
+WORKDIR /app
+
+# Copy project files
+COPY pom.xml ./
+COPY src ./src
+#USER appuser
+# Build the application
+RUN mvn clean package
+#RUN addgroup -S spring && adduser -S spring -G spring
+#USER spring:spring
+ARG JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar
+RUN cp ${JAR_FILE} /app/app.jar
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","/app/app.jar"]
+#RUN chmod 755 /app
+# Expose port
+#EXPOSE 8081
+
+# Specify the exact JAR file name
+#ENTRYPOINT ["java", "-jar", "target/app.jar"]

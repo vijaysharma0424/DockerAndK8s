@@ -1,0 +1,27 @@
+#Stage 1: Create a build-stage
+#
+FROM ubuntu:latest AS build-stage
+# Install required packages
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk maven
+RUN useradd -m appuser
+# Set working directory
+WORKDIR /app
+# Copy project files
+COPY pom.xml ./
+COPY src ./src
+# Build the application
+RUN mvn clean package
+ARG JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar
+RUN cp ${JAR_FILE} /app/app.jar
+
+# Stage 2: Create the runtime image
+#
+FROM openjdk:17-jdk-alpine
+WORKDIR /app
+#Copy package from previous Docker stage
+COPY --from=build-stage /app/app.jar app.jar
+#Expose a port on which the application will be listening
+EXPOSE 8080
+#Set the executabel to run once the container starts
+CMD ["java", "-jar", "app.jar"]
