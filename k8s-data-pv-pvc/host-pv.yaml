@@ -4,11 +4,11 @@ metadata:
   name: host-pv
 spec:
   capacity: 
-    storage: 1Gi
+    storage: 100Mi
   volumeMode: Filesystem
-  storageClassName: standard
+  storageClassName: gp2
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
     path: /data
     type: DirectoryOrCreate
