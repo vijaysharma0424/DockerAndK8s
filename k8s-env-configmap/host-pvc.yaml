@@ -10,4 +10,4 @@ spec:
   #storageClassName: standard  use this if using Minikube 
   resources:
     requests: 
-      storage: 1Gi
+      storage: 100Mi
