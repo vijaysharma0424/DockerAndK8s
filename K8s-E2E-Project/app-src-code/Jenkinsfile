@@ -9,7 +9,7 @@ pipeline {
             steps { 
                     sh 'pwd'
                     sh 'ls'
-                    sh './K8s-E2E-Project/app-src-code'      
+                    sh 'cd ./K8s-E2E-Project/app-src-code'      
                     sh 'mvn  clean install package'
             }
         }
