@@ -8,7 +8,7 @@ pipeline {
         stage('Build maven ') {
             steps { 
                     sh 'pwd'
-                    sh 'cd ./DockerAndK8s/K8s-E2E-Project/app-src-code'      
+                    sh 'ls'      
                     sh 'mvn  clean install package'
             }
         }
